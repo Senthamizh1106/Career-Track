@@ -24,7 +24,7 @@ function addApplication() {
     const notes =
     document.getElementById("notes").value;
 
-    if (company === "" || role === "") {
+    if(company === "" || role === ""){
         alert("Please fill all fields");
         return;
     }
@@ -49,60 +49,62 @@ function addApplication() {
     document.getElementById("notes").value = "";
 }
 
-function saveData() {
-
+function saveData(){
     localStorage.setItem(
         "applications",
         JSON.stringify(applications)
     );
 }
 
-function getRemainingDays(deadline) {
+function getRemainingDays(deadline){
 
-    if (!deadline) return "";
+    if(!deadline) return "";
 
     const today = new Date();
-
     const due = new Date(deadline);
 
     const diff = Math.ceil(
-        (due - today) / (1000 * 60 * 60 * 24)
+        (due - today) /
+        (1000 * 60 * 60 * 24)
     );
 
-    if (diff < 0) {
+    if(diff < 0){
 
         return `
         <p class="deadline-warning">
-            ❌ Deadline Passed
+        Deadline Passed
         </p>
         `;
     }
 
     return `
     <p class="deadline-safe">
-        ⏳ ${diff} days left
+    ${diff} days left
     </p>
     `;
 }
 
-function displayApplications(data = applications) {
+function displayApplications(data = applications){
 
     const list =
     document.getElementById("applicationList");
 
     list.innerHTML = "";
 
-    let applied = 0;
-    let interview = 0;
-    let selected = 0;
-    let rejected = 0;
+    if(data.length === 0){
 
-    data.forEach((app, index) => {
+        list.innerHTML = `
+        <div class="empty-state">
+            <h3>No Applications Found 🚀</h3>
+            <p>Add your first internship application.</p>
+        </div>
+        `;
 
-        if (app.status === "Applied") applied++;
-        if (app.status === "Interview") interview++;
-        if (app.status === "Selected") selected++;
-        if (app.status === "Rejected") rejected++;
+        updateDashboard();
+        return;
+    }
+
+    data.forEach((app,index)=>{
 
         list.innerHTML += `
 
@@ -112,7 +114,7 @@ function displayApplications(data = applications) {
 
             <p>${app.role}</p>
 
-            <span class="status">
+            <span class="status ${app.status.toLowerCase()}">
                 ${app.status}
             </span>
 
@@ -123,23 +125,48 @@ function displayApplications(data = applications) {
                 ${app.notes || "No Notes"}
             </p>
 
-            <br>
+            <div class="btn-group">
 
-            <button
-            class="edit-btn"
-            onclick="changeStatus(${index})">
+                <button
+                class="edit-btn"
+                onclick="editApplication(${index})">
+                Edit
+                </button>
+
+                <button
+                class="status-btn"
+                onclick="changeStatus(${index})">
                 Change Status
-            </button>
+                </button>
 
-            <button
-            class="delete-btn"
-            onclick="deleteApplication(${index})">
+                <button
+                class="delete-btn"
+                onclick="deleteApplication(${index})">
                 Delete
-            </button>
+                </button>
+
+            </div>
 
         </div>
-
         `;
+    });
+
+    updateDashboard();
+}
+
+function updateDashboard(){
+
+    let applied = 0;
+    let interview = 0;
+    let selected = 0;
+    let rejected = 0;
+
+    applications.forEach(app=>{
+
+        if(app.status === "Applied") applied++;
+        if(app.status === "Interview") interview++;
+        if(app.status === "Selected") selected++;
+        if(app.status === "Rejected") rejected++;
     });
 
     document.getElementById("total").textContent =
@@ -154,51 +181,70 @@ function displayApplications(data = applications) {
     document.getElementById("selected").textContent =
     selected;
 
-    const total = applications.length;
+    document.getElementById("rejected").textContent =
+    rejected;
 
     const successRate =
-    total === 0
-        ? 0
-        : Math.round((selected / total) * 100);
+    applications.length === 0
+    ? 0
+    : Math.round(
+        (selected / applications.length) * 100
+    );
 
     document.getElementById("successRate").textContent =
     successRate + "%";
 }
 
-function deleteApplication(index) {
+function editApplication(index){
 
-    applications.splice(index, 1);
+    const app = applications[index];
+
+    const company =
+    prompt("Company Name", app.company);
+
+    const role =
+    prompt("Role", app.role);
+
+    if(company && role){
+
+        app.company = company;
+        app.role = role;
+
+        saveData();
+        displayApplications();
+    }
+}
+
+function deleteApplication(index){
+
+    applications.splice(index,1);
 
     saveData();
 
     displayApplications();
 }
 
-function changeStatus(index) {
+function changeStatus(index){
 
-    let current =
+    const current =
     applications[index].status;
 
-    if (current === "Applied") {
-
+    if(current === "Applied"){
         applications[index].status =
         "Interview";
     }
 
-    else if (current === "Interview") {
-
+    else if(current === "Interview"){
         applications[index].status =
         "Selected";
     }
 
-    else if (current === "Selected") {
-
+    else if(current === "Selected"){
         applications[index].status =
         "Rejected";
     }
 
-    else {
-
+    else{
         applications[index].status =
         "Applied";
     }
@@ -208,7 +254,7 @@ function changeStatus(index) {
     displayApplications();
 }
 
-function searchApplications() {
+function searchApplications(){
 
     const value =
     document.getElementById("searchInput")
@@ -218,21 +264,20 @@ function searchApplications() {
     const filtered =
     applications.filter(app =>
         app.company
-            .toLowerCase()
-            .includes(value)
+        .toLowerCase()
+        .includes(value)
     );
 
     displayApplications(filtered);
 }
 
-function filterApplications() {
+function filterApplications(){
 
     const filter =
     document.getElementById("filterStatus")
     .value;
 
-    if (filter === "All") {
-
+    if(filter === "All"){
         displayApplications();
         return;
     }
@@ -243,4 +288,31 @@ function filterApplications() {
     );
 
     displayApplications(filtered);
+}
+
+function exportData(){
+
+    const data =
+    JSON.stringify(
+        applications,
+        null,
+        2
+    );
+
+    const blob =
+    new Blob(
+        [data],
+        {type:"application/json"}
+    );
+
+    const link =
+    document.createElement("a");
+
+    link.href =
+    URL.createObjectURL(blob);
+
+    link.download =
+    "careertrack-data.json";
+
+    link.click();
 }
