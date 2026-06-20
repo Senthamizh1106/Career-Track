@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareerTrack</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>CareerTrack 🚀</h1>
+        <p>Track Your Internship Journey</p>
+    </header>
+
+    <section class="dashboard">
+
+        <div class="card">
+            <h2 id="total">0</h2>
+            <p>Total Applications</p>
+        </div>
+
+        <div class="card">
+            <h2 id="applied">0</h2>
+            <p>Applied</p>
+        </div>
+
+        <div class="card">
+            <h2 id="interview">0</h2>
+            <p>Interview</p>
+        </div>
+
+        <div class="card">
+            <h2 id="selected">0</h2>
+            <p>Selected</p>
+        </div>
+
+    </section>
+
+    <section class="form-section">
+
+        <h2>Add Application</h2>
+
+        <input type="text" id="company" placeholder="Company Name">
+
+        <input type="text" id="role" placeholder="Role">
+
+        <select id="status">
+            <option value="Applied">Applied</option>
+            <option value="Interview">Interview</option>
+            <option value="Selected">Selected</option>
+        </select>
+
+        <button onclick="addApplication()">
+            Add Application
+        </button>
+
+    </section>
+
+    <section>
+
+        <h2 class="title">Applications</h2>
+
+        <div id="applicationList"></div>
+
+    </section>
+
+    <script src="script.js"></script>
+
+</body>
+</html>

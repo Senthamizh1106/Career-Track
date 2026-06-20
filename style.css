@@ -1,0 +1,86 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#f4f6f9;
+}
+
+header{
+    text-align:center;
+    padding:30px;
+    background:#1e293b;
+    color:white;
+}
+
+.dashboard{
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    flex-wrap:wrap;
+    padding:20px;
+}
+
+.card{
+    background:white;
+    width:180px;
+    padding:20px;
+    text-align:center;
+    border-radius:10px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
+
+.form-section{
+    width:80%;
+    max-width:500px;
+    margin:20px auto;
+    background:white;
+    padding:20px;
+    border-radius:10px;
+}
+
+.form-section h2{
+    margin-bottom:15px;
+}
+
+input,
+select,
+button{
+    width:100%;
+    padding:10px;
+    margin-top:10px;
+}
+
+button{
+    cursor:pointer;
+}
+
+.title{
+    text-align:center;
+    margin-top:20px;
+}
+
+.application-card{
+    background:white;
+    width:80%;
+    max-width:600px;
+    margin:15px auto;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.1);
+}
+
+.status{
+    display:inline-block;
+    margin-top:10px;
+    padding:5px 10px;
+    border-radius:5px;
+    background:#dbeafe;
+}
+
+.delete-btn{
+    margin-top:10px;
+}
