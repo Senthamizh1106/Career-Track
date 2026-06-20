@@ -8,10 +8,23 @@
 </head>
 <body>
 
+    <!-- Header -->
+
     <header>
-        <h1>CareerTrack 🚀</h1>
+
+        <div class="header-top">
+            <h1>CareerTrack 🚀</h1>
+
+            <button class="dark-btn" onclick="toggleDarkMode()">
+                🌙 Dark Mode
+            </button>
+        </div>
+
         <p>Track Your Internship Journey</p>
+
     </header>
+
+    <!-- Dashboard -->
 
     <section class="dashboard">
 
@@ -35,20 +48,72 @@
             <p>Selected</p>
         </div>
 
+        <div class="card">
+            <h2 id="successRate">0%</h2>
+            <p>Success Rate</p>
+        </div>
+
     </section>
+
+    <!-- Search & Filter -->
+
+    <section class="controls">
+
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="Search Company..."
+            onkeyup="searchApplications()">
+
+        <select
+            id="filterStatus"
+            onchange="filterApplications()">
+
+            <option value="All">All Status</option>
+            <option value="Applied">Applied</option>
+            <option value="Interview">Interview</option>
+            <option value="Selected">Selected</option>
+            <option value="Rejected">Rejected</option>
+
+        </select>
+
+    </section>
+
+    <!-- Add Application -->
 
     <section class="form-section">
 
         <h2>Add Application</h2>
 
-        <input type="text" id="company" placeholder="Company Name">
+        <input
+            type="text"
+            id="company"
+            placeholder="Company Name">
 
-        <input type="text" id="role" placeholder="Role">
+        <input
+            type="text"
+            id="role"
+            placeholder="Role">
+
+        <input
+            type="date"
+            id="deadline">
+
+        <textarea
+            id="notes"
+            placeholder="Notes about interview, preparation, company..."
+        ></textarea>
 
         <select id="status">
+
             <option value="Applied">Applied</option>
+
             <option value="Interview">Interview</option>
+
             <option value="Selected">Selected</option>
+
+            <option value="Rejected">Rejected</option>
+
         </select>
 
         <button onclick="addApplication()">
@@ -56,29 +121,14 @@
         </button>
 
     </section>
-    <section class="controls">
 
-    <input
-    type="text"
-    id="searchInput"
-    placeholder="Search Company..."
-    onkeyup="searchApplications()">
-
-    <select id="filterStatus"
-    onchange="filterApplications()">
-
-        <option value="All">All Status</option>
-        <option value="Applied">Applied</option>
-        <option value="Interview">Interview</option>
-        <option value="Selected">Selected</option>
-
-    </select>
-
-</section>
+    <!-- Applications -->
 
     <section>
 
-        <h2 class="title">Applications</h2>
+        <h2 class="title">
+            Applications
+        </h2>
 
         <div id="applicationList"></div>
 

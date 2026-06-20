@@ -1,32 +1,40 @@
 let applications =
-JSON.parse(localStorage.getItem("applications"))
-|| [];
+JSON.parse(localStorage.getItem("applications")) || [];
 
 displayApplications();
 
-function addApplication(){
+function toggleDarkMode() {
+    document.body.classList.toggle("dark-mode");
+}
+
+function addApplication() {
 
     const company =
-    document.getElementById("company").value;
+    document.getElementById("company").value.trim();
 
     const role =
-    document.getElementById("role").value;
+    document.getElementById("role").value.trim();
 
     const status =
     document.getElementById("status").value;
 
-    if(company === "" || role === ""){
+    const deadline =
+    document.getElementById("deadline").value;
 
+    const notes =
+    document.getElementById("notes").value;
+
+    if (company === "" || role === "") {
         alert("Please fill all fields");
-
         return;
     }
 
     const application = {
-
         company,
         role,
-        status
+        status,
+        deadline,
+        notes
     };
 
     applications.push(application);
@@ -37,9 +45,11 @@ function addApplication(){
 
     document.getElementById("company").value = "";
     document.getElementById("role").value = "";
+    document.getElementById("deadline").value = "";
+    document.getElementById("notes").value = "";
 }
 
-function saveData(){
+function saveData() {
 
     localStorage.setItem(
         "applications",
@@ -47,7 +57,35 @@ function saveData(){
     );
 }
 
-function displayApplications(data = applications){
+function getRemainingDays(deadline) {
+
+    if (!deadline) return "";
+
+    const today = new Date();
+
+    const due = new Date(deadline);
+
+    const diff = Math.ceil(
+        (due - today) / (1000 * 60 * 60 * 24)
+    );
+
+    if (diff < 0) {
+
+        return `
+        <p class="deadline-warning">
+            ❌ Deadline Passed
+        </p>
+        `;
+    }
+
+    return `
+    <p class="deadline-safe">
+        ⏳ ${diff} days left
+    </p>
+    `;
+}
+
+function displayApplications(data = applications) {
 
     const list =
     document.getElementById("applicationList");
@@ -57,12 +95,14 @@ function displayApplications(data = applications){
     let applied = 0;
     let interview = 0;
     let selected = 0;
+    let rejected = 0;
 
-    data.forEach((app,index)=>{
+    data.forEach((app, index) => {
 
-        if(app.status === "Applied") applied++;
-        if(app.status === "Interview") interview++;
-        if(app.status === "Selected") selected++;
+        if (app.status === "Applied") applied++;
+        if (app.status === "Interview") interview++;
+        if (app.status === "Selected") selected++;
+        if (app.status === "Rejected") rejected++;
 
         list.innerHTML += `
 
@@ -73,25 +113,28 @@ function displayApplications(data = applications){
             <p>${app.role}</p>
 
             <span class="status">
-            ${app.status}
+                ${app.status}
             </span>
 
-            <br><br>
+            ${getRemainingDays(app.deadline)}
+
+            <p>
+                <strong>Notes:</strong>
+                ${app.notes || "No Notes"}
+            </p>
+
+            <br>
 
             <button
             class="edit-btn"
             onclick="changeStatus(${index})">
-
-            Change Status
-
+                Change Status
             </button>
 
             <button
             class="delete-btn"
             onclick="deleteApplication(${index})">
-
-            Delete
-
+                Delete
             </button>
 
         </div>
@@ -110,35 +153,51 @@ function displayApplications(data = applications){
 
     document.getElementById("selected").textContent =
     selected;
+
+    const total = applications.length;
+
+    const successRate =
+    total === 0
+        ? 0
+        : Math.round((selected / total) * 100);
+
+    document.getElementById("successRate").textContent =
+    successRate + "%";
 }
 
-function deleteApplication(index){
+function deleteApplication(index) {
 
-    applications.splice(index,1);
+    applications.splice(index, 1);
 
     saveData();
 
     displayApplications();
 }
 
-function changeStatus(index){
+function changeStatus(index) {
 
     let current =
     applications[index].status;
 
-    if(current === "Applied"){
+    if (current === "Applied") {
 
         applications[index].status =
         "Interview";
     }
 
-    else if(current === "Interview"){
+    else if (current === "Interview") {
 
         applications[index].status =
         "Selected";
     }
 
-    else{
+    else if (current === "Selected") {
+
+        applications[index].status =
+        "Rejected";
+    }
+
+    else {
 
         applications[index].status =
         "Applied";
@@ -149,7 +208,7 @@ function changeStatus(index){
     displayApplications();
 }
 
-function searchApplications(){
+function searchApplications() {
 
     const value =
     document.getElementById("searchInput")
@@ -158,31 +217,28 @@ function searchApplications(){
 
     const filtered =
     applications.filter(app =>
-
         app.company
-        .toLowerCase()
-        .includes(value)
+            .toLowerCase()
+            .includes(value)
     );
 
     displayApplications(filtered);
 }
 
-function filterApplications(){
+function filterApplications() {
 
     const filter =
     document.getElementById("filterStatus")
     .value;
 
-    if(filter === "All"){
+    if (filter === "All") {
 
         displayApplications();
-
         return;
     }
 
     const filtered =
     applications.filter(app =>
-
         app.status === filter
     );
 

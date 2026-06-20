@@ -111,3 +111,31 @@ button{
     border:none;
     border-radius:5px;
 }
+.dark-mode{
+    background:#0f172a;
+    color:white;
+}
+
+.dark-mode .card,
+.dark-mode .application-card,
+.dark-mode .form-section{
+    background:#1e293b;
+    color:white;
+}
+
+textarea{
+    width:100%;
+    margin-top:10px;
+    padding:10px;
+    resize:none;
+}
+
+.deadline-warning{
+    color:#ef4444;
+    font-weight:bold;
+}
+
+.deadline-safe{
+    color:#22c55e;
+    font-weight:bold;
+}
