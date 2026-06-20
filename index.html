@@ -56,6 +56,25 @@
         </button>
 
     </section>
+    <section class="controls">
+
+    <input
+    type="text"
+    id="searchInput"
+    placeholder="Search Company..."
+    onkeyup="searchApplications()">
+
+    <select id="filterStatus"
+    onchange="filterApplications()">
+
+        <option value="All">All Status</option>
+        <option value="Applied">Applied</option>
+        <option value="Interview">Interview</option>
+        <option value="Selected">Selected</option>
+
+    </select>
+
+</section>
 
     <section>
 

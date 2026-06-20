@@ -84,3 +84,30 @@ button{
 .delete-btn{
     margin-top:10px;
 }
+.controls{
+    width:80%;
+    max-width:600px;
+    margin:20px auto;
+
+    display:flex;
+    gap:10px;
+}
+
+.controls input{
+    flex:1;
+}
+
+.edit-btn{
+    background:#22c55e;
+    color:white;
+}
+
+.delete-btn{
+    background:#ef4444;
+    color:white;
+}
+
+button{
+    border:none;
+    border-radius:5px;
+}
